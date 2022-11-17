@@ -18,6 +18,31 @@ public class Board {
         System.out.println(" -----------------");
     }
 
+    public static void match() {
+        printBoard();
+        while (true) {
+            System.out.println(Players.Blue.symbol + " play:");
+            if (round(Players.Blue)) {
+                break;
+            }
+            System.out.println(Players.Red.symbol+" play:");
+            if (round(Players.Red)) {
+                break;
+            }
+        }
+        System.out.println("Game Over!");
+    }
+
+    public static boolean round(Players player) {
+        setPositions(player);
+        printBoard();
+        if (checkWin(player)) {
+            System.out.println(player.symbol + " wins");
+            return true;
+        }
+        return false;
+    }
+
     public static void setPositions(Players players) {
         int choice = scanner.nextInt() - 1;
         for (int i = positions.length - 1; i >= 0; i--) {
@@ -26,6 +51,22 @@ public class Board {
                 return;
             }
         }
+    }
+
+    public static boolean checkWin(Players players) {
+        if (checkLine(players)) {
+            return true;
+        }
+        if (checkCol(players)) {
+            return true;
+        }
+        if (checkFirstDiag(players)) {
+            return true;
+        }
+        if (checkSecondDiag(players)) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean checkLine(Players players) {
@@ -38,7 +79,7 @@ public class Board {
                 }
             }
             if (counter == 4) {
-                System.out.println("LINHA");
+                System.out.println("LINE " + players.symbol);
                 return true;
             }
         }
@@ -55,28 +96,40 @@ public class Board {
                 }
             }
             if (counter == 4) {
-                System.out.println("COLUNA");
+                System.out.println("COLLUMN" + players.symbol);
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean checkDiag(Players players) {
+    public static boolean checkFirstDiag(Players players) {
         int counter = 0;
-        int j=0;
         for (int i = 0; i < positions.length; i++) {
-            counter = 0;
-            if (positions[i][j].equals(players.symbol)) {
+            if (positions[i][i].equals(players.symbol)) {
                 counter++;
             }
-            j++;
             if (counter == 4) {
-                System.out.println("DIAG");
+                System.out.println("DIAG" + players.symbol);
                 return true;
             }
         }
+        return false;
+    }
 
+    public static boolean checkSecondDiag(Players players) {
+        int counter = 0;
+        for (int i = positions.length - 1; i >= 0; i--) {
+            for (int j = 0; j < positions[0].length; j++) {
+                if (positions[i][j].equals(players.symbol)) {
+                    counter++;
+                }
+            }
+            if (counter == 4) {
+                System.out.println("DIAG" + players.symbol);
+                return true;
+            }
+        }
         return false;
     }
 }
