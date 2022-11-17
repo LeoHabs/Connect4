@@ -22,12 +22,20 @@ public class Board {
         printBoard();
         while (true) {
             System.out.println(Players.Blue.symbol + " play:");
-            if (round(Players.Blue)) {
-                break;
+            try {
+                if (round(Players.Blue)) {
+                    break;
+                }
+            }catch (Exception e){
+                System.out.println("That row doesn't exist! You lost your round");
             }
             System.out.println(Players.Red.symbol+" play:");
+            try{
             if (round(Players.Red)) {
                 break;
+            }
+            }catch (Exception e){
+                System.out.println("That row doesn't exist! You lost your round");
             }
         }
         System.out.println("Game Over!");
